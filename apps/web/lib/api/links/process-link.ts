@@ -195,7 +195,7 @@ export async function processLink<T extends Record<string, any>>({
       };
     }
     // checks for other Dub-owned domains (chatg.pt, spti.fi, etc.)
-  } else if (isDubDomain(domain)) {
+  } else if (isDubDomain(domain) && process.env.NEXT_PUBLIC_IS_DUB) {
     // coerce type with ! cause we already checked if it exists
     const { allowedHostnames } = DUB_DOMAINS.find((d) => d.slug === domain)!;
     const urlDomain = getDomainWithoutWWW(url) || "";

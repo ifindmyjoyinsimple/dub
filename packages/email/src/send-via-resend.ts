@@ -33,7 +33,7 @@ const resendEmailForOptions = (
     bcc,
     // if replyTo is set to "noreply@dub.co", don't set replyTo
     // else set it to the value of replyTo or fallback to support@dub.co
-    ...(replyTo === "noreply" ? {} : { replyTo: replyTo || "support@dub.co" }),
+    ...(replyTo === "noreply" ? {} : { replyTo: replyTo || "support@wst.partners" }),
     scheduledAt,
     tags,
     ...(variant === "marketing"
@@ -41,7 +41,7 @@ const resendEmailForOptions = (
           headers: {
             ...(headers || {}),
             "List-Unsubscribe":
-              unsubscribeUrl || "https://app.dub.co/account/settings",
+              unsubscribeUrl || "https://app.wst.partners/account/settings",
           },
         }
       : headers && { headers }),

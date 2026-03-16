@@ -48,6 +48,7 @@ export const ADMIN_HOSTNAMES = new Set([
 export const PARTNERS_HOSTNAMES = new Set([
   `partners.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
   `partners-staging.${process.env.NEXT_PUBLIC_APP_DOMAIN}`,
+  process.env.NEXT_PUBLIC_PARTNERS_DOMAIN || "",
   "partners.localhost:8888",
   "partners.localhost",
 ]);
