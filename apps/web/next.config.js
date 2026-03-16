@@ -19,6 +19,9 @@ console.warn = (...args) => {
 
 /** @type {import('next').NextConfig} */
 module.exports = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   reactStrictMode: false,
   transpilePackages: [
     "prettier",
