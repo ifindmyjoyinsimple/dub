@@ -476,10 +476,50 @@ const _trackSale = async ({
     metadata: metadata ? JSON.stringify(metadata) : "",
   };
 
-  const firstConversionFlag = isFirstConversion({
-    customer,
-    linkId: saleData.link_id,
-  });
+  const isNgrEvent = eventName === "daily_ngr";
+
+  const firstConversionFlag = isNgrEvent
+    ? false
+    : isFirstConversion({
+        customer,
+        linkId: saleData.link_id,
+      });
+
+  // NGR events: only record to Tinybird, skip link/partner/webhook updates
+  if (isNgrEvent) {
+    waitUntil(
+      recordSale({
+        ...saleData,
+        timestamp: undefined,
+      }),
+    );
+
+    const trackSaleResponse = trackSaleResponseSchema.parse({
+      eventName,
+      customer,
+      sale: {
+        amount,
+        currency,
+        invoiceId,
+        paymentProcessor,
+        metadata,
+      },
+    });
+
+    if (invoiceId) {
+      waitUntil(
+        redis.set(
+          `trackSale:${workspace.id}:invoiceId:${invoiceId}`,
+          trackSaleResponse,
+          {
+            ex: 60 * 60 * 24 * 7,
+          },
+        ),
+      );
+    }
+
+    return trackSaleResponse;
+  }
 
   waitUntil(
     (async () => {

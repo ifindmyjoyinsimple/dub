@@ -562,6 +562,7 @@ SQL >
             USING (workspace_id, link_id, customer_id)
         WHERE
             true
+            AND se.event_name != 'daily_ngr'
             {% if defined(workspaceId) %} AND se.workspace_id = {{ workspaceId }} {% end %}
             {% if defined(linkId) %}
                 {% if defined(linkIdOperator) and String(linkIdOperator) == 'NOT IN' %}
@@ -738,13 +739,72 @@ SQL >
 
 
 
+NODE timeseries_ngr_data
+SQL >
+
+    %
+    SELECT
+        {% if granularity == "hour" %}
+            toStartOfHour(se.timestamp, {{ String(timezone, 'UTC') }})
+        {% elif granularity == "month" %}
+            toDateTime64(
+                toStartOfMonth(se.timestamp, {{ String(timezone, 'UTC') }}),
+                3,
+                {{ String(timezone, 'UTC') }}
+            )
+        {% else %}
+            toDateTime64(toStartOfDay(se.timestamp, {{ String(timezone, 'UTC') }}), 3)
+        {% end %} AS interval,
+        count() AS ngr,
+        sum(toInt64(JSONExtractRaw(se.metadata, 'ngrSatang'))) AS ngrAmount
+    FROM dub_sale_events_mv AS se
+    WHERE
+        se.event_name = 'daily_ngr'
+        {% if defined(workspaceId) %} AND se.workspace_id = {{ workspaceId }} {% end %}
+        {% if defined(linkId) %}
+            {% if defined(linkIdOperator) and String(linkIdOperator) == 'NOT IN' %}
+                AND se.link_id NOT IN {{ Array(linkId, 'String') }}
+            {% else %}
+                AND se.link_id IN {{ Array(linkId, 'String') }}
+            {% end %}
+        {% elif defined(programId) or defined(partnerId) or defined(groupId) or defined(
+            tenantId
+        ) or defined(folderId) or defined(domain) or defined(
+            tagId
+        ) or defined(
+            root
+        ) %} AND se.link_id in (SELECT link_id from workspace_links)
+        {% end %}
+        {% if defined(start) %} AND se.timestamp >= {{ DateTime64(start) }} {% end %}
+        {% if defined(end) %} AND se.timestamp <= {{ DateTime64(end) }} {% end %}
+    GROUP BY interval
+    ORDER BY interval
+
+
+
+NODE timeseries_ngr
+SQL >
+
+    %
+        SELECT formatDateTime(interval, '%FT%T.000%z') as groupByField, ngr, ngrAmount
+        FROM
+            {% if granularity == "minute" %} minute_intervals
+            {% elif granularity == "hour" %} hour_intervals
+            {% elif granularity == "month" %} month_intervals
+            {% else %} day_intervals
+            {% end %}
+        LEFT JOIN timeseries_ngr_data USING interval
+
+
+
 NODE timeseries_composite
 SQL >
 
-    SELECT dce.groupByField AS groupByField, clicks, leads, sales, amount, saleAmount
+    SELECT dce.groupByField AS groupByField, clicks, leads, sales, amount, saleAmount, ngr, ngrAmount
     FROM (SELECT groupByField, clicks FROM timeseries_clicks) AS dce
     LEFT JOIN (SELECT * FROM  timeseries_leads) AS dle ON dce.groupByField = dle.groupByField
     LEFT JOIN (SELECT * FROM timeseries_sales) AS dse ON dce.groupByField = dse.groupByField
+    LEFT JOIN (SELECT * FROM timeseries_ngr) AS dne ON dce.groupByField = dne.groupByField
 
 
 
@@ -757,6 +817,7 @@ SQL >
         {% if eventType == 'clicks' %} timeseries_clicks
         {% elif eventType == 'leads' %} timeseries_leads
         {% elif eventType == 'sales' %} timeseries_sales
+        {% elif eventType == 'ngr' %} timeseries_ngr
         {% elif eventType == 'composite' %} timeseries_composite
         {% else %} timeseries_clicks
         {% end %}

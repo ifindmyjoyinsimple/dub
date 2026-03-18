@@ -22,10 +22,16 @@ export function AnalyticsFunnelChart({ demo = false }: { demo?: boolean }) {
       },
       {
         id: "sales",
-        label: "Sales",
+        label: "FTDs",
         value: demo ? 24 : totalEvents?.sales ?? 0,
         additionalValue: demo ? 228_00 : totalEvents?.saleAmount ?? 0,
         colorClassName: "text-teal-400",
+      },
+      {
+        id: "ngr",
+        label: "NGR",
+        value: demo ? 18500 : (totalEvents?.ngrAmount ?? 0) / 100,
+        colorClassName: "text-amber-500",
       },
     ],
     [demo, totalEvents],

@@ -18,7 +18,7 @@ import { parseDateSchema } from "./utils";
 
 const analyticsEvents = z
   .enum([...EVENT_TYPES, "composite"], {
-    error: "Invalid event type. Valid event types are: clicks, leads, sales",
+    error: "Invalid event type. Valid event types are: clicks, leads, sales, ngr",
   })
   .default("clicks")
   .meta({

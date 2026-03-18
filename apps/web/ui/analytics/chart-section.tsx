@@ -54,8 +54,14 @@ export function ChartSection() {
               },
               {
                 id: "sales",
-                label: "Sales",
+                label: "FTDs",
                 colorClassName: "text-teal-400/50",
+                conversions: true,
+              },
+              {
+                id: "ngr",
+                label: "NGR",
+                colorClassName: "text-amber-500/50",
                 conversions: true,
               },
             ]

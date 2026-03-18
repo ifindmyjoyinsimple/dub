@@ -437,6 +437,7 @@ SQL >
                 USING (workspace_id, link_id, customer_id)
             WHERE
                 true
+                AND se.event_name != 'daily_ngr'
                 {% if defined(workspaceId) %} AND se.workspace_id = {{ workspaceId }} {% end %}
                 {% if defined(linkId) %}
                     {% if defined(linkIdOperator) and String(linkIdOperator) == 'NOT IN' %}
@@ -597,12 +598,43 @@ SQL >
 
 
 
+NODE count_ngr
+SQL >
+
+    %
+    SELECT
+        'count' as groupByField,
+        count() AS ngr,
+        sum(toInt64(JSONExtractRaw(metadata, 'ngrSatang'))) AS ngrAmount
+    FROM dub_sale_events_mv AS se
+    WHERE
+        se.event_name = 'daily_ngr'
+        {% if defined(workspaceId) %} AND se.workspace_id = {{ workspaceId }} {% end %}
+        {% if defined(linkId) %}
+            {% if defined(linkIdOperator) and String(linkIdOperator) == 'NOT IN' %}
+                AND se.link_id NOT IN {{ Array(linkId, 'String') }}
+            {% else %}
+                AND se.link_id IN {{ Array(linkId, 'String') }}
+            {% end %}
+        {% elif defined(programId) or defined(partnerId) or defined(groupId) or defined(
+            tenantId
+        ) or defined(folderId) or defined(domain) or defined(
+            tagId
+        ) or defined(
+            root
+        ) %} AND se.link_id in (SELECT link_id from workspace_links)
+        {% end %}
+        {% if defined(start) %} AND se.timestamp >= {{ DateTime(start) }} {% end %}
+        {% if defined(end) %} AND se.timestamp <= {{ DateTime(end) }} {% end %}
+
+
+
 NODE count_composite
 SQL >
 
     %
-    SELECT 'count' as groupByField, clicks, leads, sales, amount, saleAmount
-    FROM count_clicks, count_leads, count_sales
+    SELECT 'count' as groupByField, clicks, leads, sales, amount, saleAmount, ngr, ngrAmount
+    FROM count_clicks, count_leads, count_sales, count_ngr
 
 
 
@@ -615,6 +647,7 @@ SQL >
         {% if eventType == 'clicks' %} count_clicks
         {% elif eventType == 'leads' %} count_leads
         {% elif eventType == 'sales' %} count_sales
+        {% elif eventType == 'ngr' %} count_ngr
         {% elif eventType == 'composite' %} count_composite
         {% else %} count_clicks
         {% end %}

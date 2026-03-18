@@ -25,7 +25,9 @@ export type AnalyticsResponseOptions =
   | "clicks"
   | "leads"
   | "sales"
-  | "saleAmount";
+  | "saleAmount"
+  | "ngr"
+  | "ngrAmount";
 
 export type AnalyticsResponse = {
   [K in keyof typeof analyticsResponse]: z.infer<(typeof analyticsResponse)[K]>;

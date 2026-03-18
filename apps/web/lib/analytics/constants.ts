@@ -179,7 +179,7 @@ export const DIMENSIONAL_ANALYTICS_FILTERS = [
 
 export const TRIGGER_TYPES = ["qr", "link", "pageview", "deeplink"] as const;
 
-export const EVENT_TYPES = ["clicks", "leads", "sales"] as const;
+export const EVENT_TYPES = ["clicks", "leads", "sales", "ngr"] as const;
 
 export const ANALYTICS_VIEWS = ["timeseries", "funnel"] as const;
 

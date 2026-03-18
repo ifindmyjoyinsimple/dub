@@ -55,8 +55,14 @@ export function AnalyticsTabs({
               },
               {
                 id: "sales",
-                label: "Sales",
+                label: "FTDs",
                 colorClassName: "text-teal-400/50",
+                conversions: true,
+              },
+              {
+                id: "ngr",
+                label: "NGR",
+                colorClassName: "text-amber-500/50",
                 conversions: true,
               },
             ]
@@ -65,8 +71,10 @@ export function AnalyticsTabs({
     [showConversions],
   );
 
+  const tabCount = tabs.length;
+
   return (
-    <div className="grid w-full grid-cols-3 divide-x divide-neutral-200 overflow-y-hidden">
+    <div className={cn("grid w-full divide-x divide-neutral-200 overflow-y-hidden", tabCount === 5 ? "grid-cols-5" : "grid-cols-3")}>
       <NumberFlowGroup>
         {tabs.map(({ id, label, colorClassName }, idx) => {
           return (
@@ -81,7 +89,7 @@ export function AnalyticsTabs({
               )}
               <Link
                 className={cn(
-                  "border-box relative block h-full min-w-[110px] flex-none px-4 py-3 sm:min-w-[240px] sm:px-8 sm:py-6",
+                  "border-box relative block h-full min-w-[80px] flex-none px-3 py-3 sm:min-w-[140px] sm:px-6 sm:py-6",
                   "transition-colors hover:bg-neutral-50 focus:outline-none active:bg-neutral-100",
                   "ring-inset ring-neutral-500 focus-visible:ring-1 sm:first:rounded-tl-xl",
                 )}
@@ -111,7 +119,9 @@ export function AnalyticsTabs({
                       value={
                         id === "sales" && saleUnit === "saleAmount"
                           ? totalEvents.saleAmount / 100
-                          : totalEvents[id]
+                          : id === "ngr"
+                            ? (totalEvents.ngrAmount ?? 0) / 100
+                            : totalEvents[id]
                       }
                       className={cn(
                         "text-xl font-medium sm:text-3xl",
@@ -122,15 +132,22 @@ export function AnalyticsTabs({
                           ? {
                               style: "currency",
                               currency: "USD",
-                              // @ts-ignore – trailingZeroDisplay is a valid option but TS is outdated
+                              // @ts-ignore – trailingZeroDisplay is a valid option but TS is outdated
                               trailingZeroDisplay: "stripIfInteger",
                             }
-                          : {
-                              notation:
-                                totalEvents[id] > 999999
-                                  ? "compact"
-                                  : "standard",
-                            }
+                          : id === "ngr"
+                            ? {
+                                style: "currency",
+                                currency: "THB",
+                                // @ts-ignore
+                                trailingZeroDisplay: "stripIfInteger",
+                              }
+                            : {
+                                notation:
+                                  totalEvents[id] > 999999
+                                    ? "compact"
+                                    : "standard",
+                              }
                       }
                     />
                   ) : requiresUpgrade ? (

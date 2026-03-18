@@ -114,6 +114,12 @@ export function AnalyticsAreaChart({
       isActive: resource === "sales",
       colorClassName: "text-teal-400",
     },
+    {
+      id: "ngr",
+      valueAccessor: (d) => (d.values.ngrAmount ?? 0) / 100,
+      isActive: resource === "ngr",
+      colorClassName: "text-amber-500",
+    },
   ];
 
   const activeSeries = series.find(({ id }) => id === resource);
@@ -154,7 +160,9 @@ export function AnalyticsAreaChart({
                     <p className="text-right font-medium text-neutral-900">
                       {resource === "sales" && saleUnit === "saleAmount"
                         ? currencyFormatter(d.values.saleAmount)
-                        : nFormatter(d.values[resource], { full: true })}
+                        : resource === "ngr"
+                          ? `฿${((d.values.ngrAmount ?? 0) / 100).toLocaleString()}`
+                          : nFormatter(d.values[resource], { full: true })}
                     </p>
                   </Fragment>
                 </div>
@@ -181,7 +189,9 @@ export function AnalyticsAreaChart({
                     currencyFormatter(v, {
                       trailingZeroDisplay: "stripIfInteger",
                     })
-                : nFormatter
+                : resource === "ngr"
+                  ? (v) => `฿${Number(v).toLocaleString()}`
+                  : nFormatter
             }
           />
         </TimeSeriesChart>
