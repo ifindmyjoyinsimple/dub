@@ -13,7 +13,7 @@ export default defineConfig((options: Options) => ({
       js: '"use client"',
     };
   },
-  dts: true,
+  dts: false, // skip DTS — upstream tiptap type mismatches break self-hosted builds
   minify: true,
   external: ["react"],
   ...options,
