@@ -58,7 +58,7 @@ export function TopLinks() {
 
   const { selectedTab, saleUnit, adminPage, partnerPage, dashboardProps } =
     useContext(AnalyticsContext);
-  const dataKey = selectedTab === "sales" ? saleUnit : "count";
+  const dataKey = selectedTab === "sales" ? saleUnit : selectedTab === "ngr" ? "ngrAmount" : "count";
 
   const [tab, setTab] = useState<TabId>("links");
   const [subtab, setSubtab] = useState<Subtab>(TAB_CONFIG[tab].defaultSubtab);

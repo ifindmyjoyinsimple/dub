@@ -43,7 +43,7 @@ export function ReferrersUTMs() {
   const { queryParams, searchParams } = useRouterStuff();
 
   const { selectedTab, saleUnit } = useContext(AnalyticsContext);
-  const dataKey = selectedTab === "sales" ? saleUnit : "count";
+  const dataKey = selectedTab === "sales" ? saleUnit : selectedTab === "ngr" ? "ngrAmount" : "count";
 
   const [tab, setTab] = useState<TabId>("referers");
   const [subtab, setSubtab] = useState<Subtab>(TAB_CONFIG[tab].defaultSubtab);

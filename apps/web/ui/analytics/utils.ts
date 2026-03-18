@@ -77,6 +77,7 @@ export function useAnalyticsFilterOption(
         ...d,
         count: d[selectedTab] as number | undefined,
         saleAmount: d.saleAmount as number | undefined,
+        ngrAmount: d.ngrAmount as number | undefined,
       })) ?? null,
     loading: !data || isLoading,
   };

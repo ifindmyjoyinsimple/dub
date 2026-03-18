@@ -19,7 +19,7 @@ export function LocationSection() {
   const { queryParams, searchParams } = useRouterStuff();
 
   const { selectedTab, saleUnit } = useContext(AnalyticsContext);
-  const dataKey = selectedTab === "sales" ? saleUnit : "count";
+  const dataKey = selectedTab === "sales" ? saleUnit : selectedTab === "ngr" ? "ngrAmount" : "count";
 
   const [tab, setTab] = useState<
     "countries" | "cities" | "regions" | "continents"
