@@ -231,7 +231,7 @@ export function LineItem({
         <div className="z-10 flex items-center">
           <NumberFlow
             value={
-              unit === "sales" && saleUnit === "saleAmount"
+              (unit === "sales" && saleUnit === "saleAmount") || unit === "ngr"
                 ? value / 100
                 : value
             }
@@ -247,11 +247,16 @@ export function LineItem({
               unit === "sales" && saleUnit === "saleAmount"
                 ? {
                     style: "currency",
-                    currency: "USD",
+                    currency: "THB",
                   }
-                : {
-                    notation: value > 999999 ? "compact" : "standard",
-                  }
+                : unit === "ngr"
+                  ? {
+                      style: "currency",
+                      currency: "THB",
+                    }
+                  : {
+                      notation: value > 999999 ? "compact" : "standard",
+                    }
             }
           />
           <div

@@ -67,6 +67,8 @@ export function AnalyticsAreaChart({
       leads: number;
       sales: number;
       saleAmount: number;
+      ngr: number;
+      ngrAmount: number;
     }[]
   >(
     !demo &&
@@ -83,13 +85,15 @@ export function AnalyticsAreaChart({
     () =>
       demo
         ? DEMO_DATA
-        : data?.map(({ start, clicks, leads, sales, saleAmount }) => ({
+        : data?.map(({ start, clicks, leads, sales, saleAmount, ngr, ngrAmount }) => ({
             date: new Date(start),
             values: {
               clicks,
               leads,
               sales,
               saleAmount,
+              ngr,
+              ngrAmount,
             },
           })) ?? null,
     [data, demo],
@@ -116,7 +120,7 @@ export function AnalyticsAreaChart({
     },
     {
       id: "ngr",
-      valueAccessor: (d) => (d.values.ngrAmount ?? 0) / 100,
+      valueAccessor: (d) => d.values.ngrAmount ?? 0,
       isActive: resource === "ngr",
       colorClassName: "text-amber-500",
     },
@@ -159,9 +163,9 @@ export function AnalyticsAreaChart({
                     </div>
                     <p className="text-right font-medium text-neutral-900">
                       {resource === "sales" && saleUnit === "saleAmount"
-                        ? currencyFormatter(d.values.saleAmount)
+                        ? currencyFormatter(d.values.saleAmount, { currency: "THB" })
                         : resource === "ngr"
-                          ? `฿${((d.values.ngrAmount ?? 0) / 100).toLocaleString()}`
+                          ? currencyFormatter(d.values.ngrAmount ?? 0, { currency: "THB" })
                           : nFormatter(d.values[resource], { full: true })}
                     </p>
                   </Fragment>
@@ -187,10 +191,15 @@ export function AnalyticsAreaChart({
               resource === "sales" && saleUnit === "saleAmount"
                 ? (v) =>
                     currencyFormatter(v, {
+                      currency: "THB",
                       trailingZeroDisplay: "stripIfInteger",
                     })
                 : resource === "ngr"
-                  ? (v) => `฿${Number(v).toLocaleString()}`
+                  ? (v) =>
+                      currencyFormatter(v, {
+                        currency: "THB",
+                        trailingZeroDisplay: "stripIfInteger",
+                      })
                   : nFormatter
             }
           />

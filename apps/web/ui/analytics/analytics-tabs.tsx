@@ -131,7 +131,7 @@ export function AnalyticsTabs({
                         id === "sales" && saleUnit === "saleAmount"
                           ? {
                               style: "currency",
-                              currency: "USD",
+                              currency: "THB",
                               // @ts-ignore – trailingZeroDisplay is a valid option but TS is outdated
                               trailingZeroDisplay: "stripIfInteger",
                             }

@@ -23,6 +23,8 @@ const analyticsTriggersResponse = z.object({
   saleAmount: centsSchemaWithDefault.describe(
     "The total amount of sales from this trigger method, in cents",
   ),
+  ngr: z.coerce.number().describe("The number of NGR events from this trigger method").default(0),
+  ngrAmount: z.coerce.number().describe("The total NGR amount from this trigger method, in satang").default(0),
 });
 
 export const analyticsResponse = {
@@ -54,6 +56,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales in the interval, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events in the interval").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount in the interval, in satang").default(0),
   }),
 
   continents: z.object({
@@ -77,6 +81,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this continent, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this continent").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this continent, in satang").default(0),
   }),
 
   countries: z.object({
@@ -102,6 +108,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this country, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this country").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this country, in satang").default(0),
   }),
 
   regions: z.object({
@@ -129,6 +137,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this region, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this region").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this region, in satang").default(0),
   }),
 
   cities: z.object({
@@ -152,6 +162,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this city, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this city").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this city, in satang").default(0),
   }),
 
   devices: z.object({
@@ -171,6 +183,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this device, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this device").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this device, in satang").default(0),
   }),
 
   browsers: z.object({
@@ -190,6 +204,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this browser, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this browser").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this browser, in satang").default(0),
   }),
 
   os: z.object({
@@ -200,6 +216,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this OS, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this OS").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this OS, in satang").default(0),
   }),
 
   triggers: analyticsTriggersResponse,
@@ -224,6 +242,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this referer, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this referer").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this referer, in satang").default(0),
   }),
 
   referer_urls: z.object({
@@ -247,6 +267,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this referer to this URL, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this referer URL").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this referer URL, in satang").default(0),
   }),
 
   top_links: z.object({
@@ -286,6 +308,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this link, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this link").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this link, in satang").default(0),
   }),
 
   top_urls: z.object({
@@ -301,6 +325,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this URL, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this URL").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this URL, in satang").default(0),
   }),
 
   top_base_urls: z.object({
@@ -322,6 +348,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this base URL, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this base URL").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this base URL, in satang").default(0),
   }),
 
   utm_sources: z.object({
@@ -341,6 +369,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales with this UTM source, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events with this UTM source").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount with this UTM source, in satang").default(0),
   }),
 
   utm_mediums: z.object({
@@ -360,6 +390,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales with this UTM medium, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events with this UTM medium").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount with this UTM medium, in satang").default(0),
   }),
 
   utm_campaigns: z.object({
@@ -379,6 +411,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales with this UTM campaign, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events with this UTM campaign").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount with this UTM campaign, in satang").default(0),
   }),
 
   utm_terms: z.object({
@@ -398,6 +432,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales with this UTM term, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events with this UTM term").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount with this UTM term, in satang").default(0),
   }),
 
   utm_contents: z.object({
@@ -417,6 +453,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales with this UTM content, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events with this UTM content").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount with this UTM content, in satang").default(0),
   }),
 
   top_folders: z.object({
@@ -431,6 +469,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this link folder, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this folder").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this folder, in satang").default(0),
   }),
 
   top_link_tags: z.object({
@@ -442,6 +482,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this link tag, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this tag").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this tag, in satang").default(0),
   }),
 
   top_domains: z.object({
@@ -452,6 +494,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this domain, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this domain").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this domain, in satang").default(0),
   }),
 
   top_partners: z.object({
@@ -472,6 +516,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this partner for this program, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this partner").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this partner, in satang").default(0),
   }),
 
   top_groups: z.object({
@@ -488,5 +534,7 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales from this group, in cents",
     ),
+    ngr: z.coerce.number().describe("The number of NGR events from this group").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount from this group, in satang").default(0),
   }),
 } as const;
