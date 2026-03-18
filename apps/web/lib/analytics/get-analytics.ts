@@ -63,10 +63,12 @@ export const getAnalytics = async (params: AnalyticsFilters) => {
     const linkIdPlaceholders = normalizedLinkId.values.map(() => "?").join(",");
     const aggregateColumns =
       event === "composite"
-        ? `SUM(clicks) as clicks, SUM(leads) as leads, SUM(sales) as sales, SUM(saleAmount) as saleAmount`
+        ? `SUM(clicks) as clicks, SUM(leads) as leads, SUM(sales) as sales, SUM(saleAmount) as saleAmount, SUM(ngr) as ngr, SUM(ngrAmount) as ngrAmount`
         : event === "sales"
           ? `SUM(sales) as sales, SUM(saleAmount) as saleAmount`
-          : `SUM(${event}) as ${event}`;
+          : event === "ngr"
+            ? `SUM(ngr) as ngr, SUM(ngrAmount) as ngrAmount`
+            : `SUM(${event}) as ${event}`;
 
     const response = await conn.execute(
       `SELECT ${aggregateColumns} FROM Link WHERE id IN (${linkIdPlaceholders})`,
@@ -114,6 +116,8 @@ export const getAnalytics = async (params: AnalyticsFilters) => {
       leads: z.number().default(0),
       sales: z.number().default(0),
       saleAmount: z.number().default(0),
+      ngr: z.number().default(0),
+      ngrAmount: z.number().default(0),
       // only for cities and regions groupBy
       country: z.string().optional(),
       region: z.string().optional(),

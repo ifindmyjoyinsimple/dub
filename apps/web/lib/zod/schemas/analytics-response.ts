@@ -33,6 +33,8 @@ export const analyticsResponse = {
     saleAmount: centsSchemaWithDefault.describe(
       "The total amount of sales, in cents",
     ),
+    ngr: z.coerce.number().describe("The total number of NGR events").default(0),
+    ngrAmount: z.coerce.number().describe("The total NGR amount, in satang").default(0),
   }),
 
   timeseries: z.object({
