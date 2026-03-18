@@ -599,6 +599,7 @@ SQL >
             USING (workspace_id, link_id, customer_id)
         WHERE
             true
+            AND se.event_name != 'daily_ngr'
             {% if defined(workspaceId) %} AND se.workspace_id = {{ workspaceId }} {% end %}
             {% if defined(linkId) %}
                 {% if defined(linkIdOperator) and String(linkIdOperator) == 'NOT IN' %}
